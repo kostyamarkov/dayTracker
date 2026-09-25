@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f4f7f4">
+    <?!= include_('Styles'); ?>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <a class="brand" href="#" aria-label="Day Tracker, current month">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span class="brand-copy">
+            <strong>Day Tracker</strong>
+            <span>Work calendar · Portugal</span>
+          </span>
+        </a>
+        <div class="header-meta">
+          <span class="connection-dot" id="connection-dot" aria-hidden="true"></span>
+          <span id="connection-label">Connecting</span>
+          <span class="preview-tag" id="preview-tag" hidden>Local preview</span>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Calendar and monthly summary">
+        <section class="calendar-panel" aria-labelledby="month-title">
+          <div class="calendar-toolbar">
+            <div class="month-heading">
+              <p class="eyebrow">CALENDAR</p>
+              <h1 id="month-title">Loading...</h1>
+            </div>
+            <nav class="month-navigation" aria-label="Month navigation">
+              <button class="icon-button" id="previous-month" type="button" aria-label="Previous month" title="Previous month">&lsaquo;</button>
+              <button class="today-button" id="current-month" type="button">Today</button>
+              <button class="icon-button" id="next-month" type="button" aria-label="Next month" title="Next month">&rsaquo;</button>
+            </nav>
+          </div>
+
+          <div class="calendar-grid" id="calendar-grid" role="grid" aria-labelledby="month-title"></div>
+          <div class="legend" aria-label="Calendar legend">
+            <span><i class="legend-swatch swatch-office"></i>Office</span>
+            <span><i class="legend-swatch swatch-home"></i>Home</span>
+            <span><i class="legend-swatch swatch-nonworking"></i>Non-working</span>
+            <span><i class="legend-swatch swatch-empty"></i>Unselected</span>
+          </div>
+          <p class="save-state" id="save-state" role="status" aria-live="polite"></p>
+        </section>
+
+        <aside class="summary-panel" aria-labelledby="summary-title">
+          <div class="summary-topline">
+            <span class="summary-icon" aria-hidden="true">10</span>
+            <span class="eyebrow">MONTHLY ALLOWANCE</span>
+          </div>
+          <h2 id="summary-title">Work from home</h2>
+          <div class="summary-count" aria-live="polite">
+            <span id="home-days">--</span>
+            <span class="count-divider">/</span>
+            <span class="count-limit">10</span>
+          </div>
+          <p class="summary-caption">days counted this month</p>
+          <div class="progress-track" id="progress-track" role="progressbar" aria-label="Monthly allowance used" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+            <span class="progress-fill" id="progress-fill"></span>
+          </div>
+          <p class="summary-message" id="summary-message">Loading summary...</p>
+          <div class="summary-rule">
+            <span class="rule-mark" aria-hidden="true">i</span>
+            <p>Unselected working days count as home. Office days, weekends, holidays, and leave are excluded.</p>
+          </div>
+        </aside>
+      </section>
+      <footer class="app-footer"><?!= include_('Version'); ?></footer>
+    </main>
+
+    <dialog class="status-dialog" id="status-dialog" aria-labelledby="dialog-title">
+      <form method="dialog" class="dialog-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">DAY STATUS</p>
+            <h2 id="dialog-title">Choose a status</h2>
+            <p class="dialog-date" id="dialog-date"></p>
+          </div>
+          <button class="icon-button dialog-close" type="submit" aria-label="Close">&times;</button>
+        </div>
+        <div class="status-options" role="group" aria-label="Day status options">
+          <button class="status-option status-option-empty" type="button" data-day-type="working" data-work-mode="unselected">
+            <span class="option-swatch"></span><span><strong>Unselected</strong><small>Working day; counts as home</small></span>
+          </button>
+          <button class="status-option status-option-office" type="button" data-day-type="working" data-work-mode="office">
+            <span class="option-swatch"></span><span><strong>Office</strong><small>Does not count toward the home allowance</small></span>
+          </button>
+          <button class="status-option status-option-home" type="button" data-day-type="working" data-work-mode="home">
+            <span class="option-swatch"></span><span><strong>Home</strong><small>Counts as a home day</small></span>
+          </button>
+          <button class="status-option status-option-nonworking" type="button" data-day-type="weekend" data-work-mode="">
+            <span class="option-swatch"></span><span><strong>Weekend</strong><small>Not counted as a working day</small></span>
+          </button>
+          <button class="status-option status-option-holiday" type="button" data-day-type="holiday" data-work-mode="">
+            <span class="option-swatch"></span><span><strong>Holiday</strong><small>National holidays are preloaded</small></span>
+          </button>
+          <button class="status-option status-option-leave" type="button" data-day-type="leave" data-work-mode="">
+            <span class="option-swatch"></span><span><strong>Leave</strong><small>Not counted as a working day</small></span>
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <?!= include_('Client'); ?>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "day-tracker",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "dev": "node tools/preview-server.js",
+    "clasp": "clasp",
+    "version:sync": "node tools/update-app-version.js",
+    "push:gas": "node tools/update-app-version.js && clasp push"
+  },
+  "devDependencies": {
+    "@google/clasp": "^3.1.2"
+  }
+}
