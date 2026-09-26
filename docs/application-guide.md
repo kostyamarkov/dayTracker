@@ -135,7 +135,3 @@ The source is implemented, but no application setup, production spreadsheet, GAS
 Local commands: `npm test` runs the domain/holiday tests; `npm run dev` starts the non-persistent preview at `http://127.0.0.1:4173`.
 
 Do not commit access tokens, service-account keys, real spreadsheet IDs, or other secrets. Do not expose server-side configuration to the browser. Restrict Apps Script project editor access, since editors can modify and redeploy the server code. Verify the deployment identity and sharing permissions before relying on spreadsheet access controls.
-
-## Current Status
-
-The initial implementation and local tests exist. The production app remains disconnected until the owner creates/configures the private spreadsheet and Apps Script project, supplies local `clasp` authentication, and deploys it from their Google account.
