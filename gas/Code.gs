@@ -2,8 +2,10 @@ const HOLIDAYS_TAB = 'Holidays';
 const DAYS_TAB = 'Days';
 const HOLIDAY_HEADERS = ['date', 'name', 'scope', 'source'];
 const DAY_HEADERS = ['date', 'dayType', 'workMode', 'updatedAt'];
+const ALLOWED_USER_EMAILS = ['kostyamarkov@me.com', 'viktoriakostina842@gmail.com'];
 
 function doGet() {
+  requireAllowedUser_();
   return HtmlService.createTemplateFromFile('Index')
     .evaluate()
     .setTitle('Day Tracker')
@@ -15,7 +17,15 @@ function include_(filename) {
 }
 
 function initializeDayTracker() {
+  requireAllowedUser_();
   return initializeDayTracker_();
+}
+
+function requireAllowedUser_() {
+  const email = Session.getActiveUser().getEmail().trim().toLowerCase();
+  if (!email || !ALLOWED_USER_EMAILS.includes(email)) {
+    throw new Error('Access denied. This Google account is not allowed to use Day Tracker.');
+  }
 }
 
 function initializeDayTracker_() {
@@ -33,6 +43,7 @@ function initializeDayTracker_() {
 }
 
 function getMonthData(year, month) {
+  requireAllowedUser_();
   const dateKeys = getMonthDateKeys_(Number(year), Number(month));
   const spreadsheet = getSpreadsheet_();
   const holidaysByDate = readHolidayMap_(spreadsheet.getSheetByName(HOLIDAYS_TAB));
@@ -44,6 +55,7 @@ function getMonthData(year, month) {
 }
 
 function saveDayStatus(dateKey, dayType, workMode) {
+  requireAllowedUser_();
   const parsed = parseDateKey_(dateKey);
   if (!parsed) {
     throw new Error('Invalid date. Expected YYYY-MM-DD.');

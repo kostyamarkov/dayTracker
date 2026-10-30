@@ -43,7 +43,7 @@ Open `http://127.0.0.1:4173` in your browser. The preview is in-memory and chang
 
 ### Step 1.3: Run Local Tests
 
-Verify the counting rules and Portuguese holiday dates:
+Verify access control, counting rules and Portuguese holiday dates:
 
 ```bash
 npm run test
@@ -80,7 +80,7 @@ In the Cloud Console:
 4. Open the sheet and note the **Spreadsheet ID** from the URL:
    - URL format: `https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit`
    - Copy the part between `/d/` and `/edit`.
-5. **Do not share this sheet publicly.** It is private to your account.
+5. **Do not share this sheet publicly.** Give `viktoriakostina842@gmail.com` Editor access so both allowed accounts can read and update the shared calendar.
 
 ### Step 2.4: Create a Google Apps Script Project
 
@@ -135,7 +135,7 @@ npm run push:gas
 ```
 
 This command:
-1. Generates `gas/Version.html` with the latest Git commit hash
+1. Generates `gas/Version.html` with the latest Git commit timestamp
 2. Uploads all files from the `gas/` folder to your Apps Script project
 
 After the upload, refresh your [Apps Script editor](https://script.google.com/) to see the updated code.
@@ -197,8 +197,8 @@ In the Apps Script editor:
 1. Click **Deploy** (top right) → **New deployment**.
 2. Select **Type:** → click the dropdown and choose **Web app**.
 3. Fill in the fields:
-   - **Execute as:** Your Google Account (the deployer)
-   - **Who has access:** Only myself
+   - **Execute as:** User accessing the web app
+   - **Who has access:** Anyone with a Google account
 4. Click **Deploy**.
 5. A popup will show the deployment URL, similar to:
    ```
@@ -210,6 +210,15 @@ In the Apps Script editor:
    ```
 
 **Copy and save this URL for later testing.**
+
+The server allows only `kostyamarkov@me.com` and `viktoriakostina842@gmail.com`.
+Both addresses must be Google accounts, including the non-Gmail address.
+Each user must authorize the app and have Editor access to the configured spreadsheet.
+The page and all public server functions check the signed-in email before doing any work.
+Other accounts, or sessions with an unavailable email, receive an access-denied error.
+Do not execute as the deployer: the visitor's email may be unavailable in that mode.
+Keep Apps Script project editor access restricted; spreadsheet sharing does not require sharing the script project.
+The local preview does not use Google authentication and is not an access-control test.
 
 ### Step 6.2: Test the /dev URL
 
@@ -237,8 +246,8 @@ In the Apps Script editor:
 1. Click **Deploy** (top right) → **All deployments**.
 2. Click **Create deployment** (if not already done) or select an existing Web app deployment.
 3. For production, create a new **Web app** deployment with:
-   - **Execute as:** Your Google Account
-   - **Who has access:** Only myself
+   - **Execute as:** User accessing the web app
+   - **Who has access:** Anyone with a Google account
 4. Each deployment gets a unique URL; bookmark this URL for daily use.
 
 ### Step 7.2: Update Deployments After Code Changes
@@ -249,14 +258,22 @@ When you update the code:
 2. In the Apps Script editor, click **Deploy** → **All deployments**.
 3. Click the pencil icon next to the production deployment.
 4. Click **Create new version** to save a new version of the code.
-5. The old version URL remains active; the new version URL is provided after deployment.
-6. Update your bookmark to the new URL.
+5. Save the updated deployment. Editing an existing deployment keeps its `/exec` URL.
+6. Open that URL and authorize any newly requested permissions.
 
 ⚠️ **Important:** Versioned deployments do not auto-update. You must manually create a new version for each code change.
 
 ---
 
 ## Part 8: Acceptance Testing
+
+### Access Control
+
+1. Open the production `/exec` URL separately with each allowed Google account and authorize the app.
+2. Verify both users can load the calendar and save a status to the shared spreadsheet.
+3. Open the same URL with a third Google account and verify access is denied.
+4. Confirm the deployment executes as the accessing user, not as the deployer.
+5. Disable or update any older deployments that still expose versions without access checks.
 
 ### Test Case 1: Normal Month
 
